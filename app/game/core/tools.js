@@ -62,7 +62,7 @@
                                 App.Game.versionString, 
                                 App.Game.settings.debug.font, 
                                 this.debugColor, 
-                                280, 
+                                180, 
                                 20
                         );
                 };

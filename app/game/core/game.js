@@ -53,9 +53,6 @@
                         App.Controls    = new App.Objects.Controls();
                         App.Player      = new App.Objects.Player(settings.player);
 
-                        // init player
-                        App.Player.init();
-
                         // init savefiles (TODO: automate this?)
                         //App.Saves = {};
                         //App.Saves.StatsSave = new App.Objects.SaveFile(App.Defs.Saves_StatsSave);

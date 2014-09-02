@@ -63,6 +63,11 @@
                                 },
 
                                 update: function() {
+
+                                        if(App.Controls.keyPress('SPACE')) {
+                                                App.Game.setGameState('setup', function(){
+                                                });
+                                        }
                                 }
                         }
                 }, 
@@ -81,6 +86,13 @@
                                 },
 
                                 update: function() {
+
+                                        App.Player.init();
+
+                                        if(1) {
+                                                App.Game.setGameState('gameplay', function(){
+                                                });
+                                        }
                                 }
                         }
                 }, 
@@ -96,6 +108,8 @@
 
                         tick: {
                                 draw: function(interpolation, moveDelta) {
+
+                                        App.Player.playerEnt.c('Renderable').draw(interpolation, 'entity', moveDelta);
                                 },
 
                                 update: function() {

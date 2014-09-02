@@ -7,8 +7,8 @@ App.init = function() {
                 // drawing/canvas settings
                 draw: {
                         // all canvases must be the same width/height
-                        width: 960, 
-                        height: 720, 
+                        width: 640, 
+                        height: 480, 
 
                         // available ids: background, entity, hud, menu
                         canvases: [
@@ -48,14 +48,16 @@ App.init = function() {
                         updatecap: 20, 
 
                         hud: {
-                                titleFont: 'bold 64px PressStart', 
-                                mainFont: 'bold 56px PressStart'
+                                titleFont: '64px PressStart', 
+                                mainFont: '56px PressStart',
+                                smallFont: '16px PressStart'
                         }, 
 
                         // for lazy lookups
                         fontHeights: {
-                                'bold 64px PressStart': 64, 
-                                'bold 56px PressStart': 56, 
+                                '64px PressStart': 64, 
+                                '56px PressStart': 56, 
+                                '16px PressStart': 16, 
                                 'bold 26px Courier New': 26,
                                 'bold 12px Courier New': 12
                         }, 
@@ -66,8 +68,8 @@ App.init = function() {
                         }, 
 
                         video: {
-                                width: 960, 
-                                height: 720, 
+                                width: 640, 
+                                height: 480, 
                                 upscale: false
                         }
                 }, 

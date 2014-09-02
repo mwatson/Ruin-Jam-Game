@@ -2,10 +2,6 @@
 
         var player = function(settings) {
 
-                this.defaults = {};
-
-                this.inventory = {};
-
                 this.playerEnt = null;
 
                 this.run = function(collisions) {
@@ -15,45 +11,38 @@
                         this.playerEnt.attrs.dir = { x: 0, y: 0 };
                 };
 
-                this.unsetState = function() {
-                        state.set = false;
-                };
-
-                this.saveState = function() {
-                        state.spriteSet = this.playerEnt.c('Renderable').attrs.spriteSet;
-                        state.health    = this.playerEnt.c('Hurtable').health;
-                        state.maxHealth = this.playerEnt.c('Hurtable').maxHealth;
-                        state.bombs     = this.playerEnt.c('HasProjectile').getInventory();
-                        state.maxBombs  = this.playerEnt.c('HasProjectile').getMaxInventory();
-                        state.souls     = this.playerEnt.c('IsPlayer').getActCurrency();
-                        state.maxSouls  = this.playerEnt.c('IsPlayer').getActCurrencyMax();
-                        state.secState  = this.playerEnt.c('IsPlayer').secondaryState; 
-
-                        state.set = true;
-                };
-
-                this.restoreState = function() {
-                        if(!this.hasState()) {
-                                return false;
-                        }
-
-                        // make sure you set the maximums before filling in the current values
-                        this.playerEnt.c('Renderable').setSprites(state.spriteSet);
-                        this.playerEnt.c('Hurtable').maxHealth = state.maxHealth;
-                        this.playerEnt.c('Hurtable').health = state.health;
-                        this.playerEnt.c('HasProjectile').setMaxInventory(state.maxBombs);
-                        this.playerEnt.c('HasProjectile').setInventory(state.bombs);
-                        this.playerEnt.c('IsPlayer').secondaryState = state.secState;
-                        this.playerEnt.c('IsPlayer').setActCurrencyMax(state.maxSouls);
-                        this.playerEnt.c('IsPlayer').addActCurrency(state.souls);
-
-                        return true;
-                };
-
                 this.reset = function() {
                 };
 
                 this.init = function() {
+
+                        function setPixel(imgData, x, y, r, g, b, a) {
+                                var index = (x + y * imgData.width) * 4;
+                                imgData.data[index +  0] = r;
+                                imgData.data[index +  1] = g;
+                                imgData.data[index +  2] = b;
+                                imgData.data[index +  3] = a;
+                        }
+
+                        var props = App.Definitions.get('Entity', 'player');
+
+                        props.x = 100;
+                        props.y = 100;
+                        props.type = 'player';
+
+                        this.playerEnt = new App.Objects.Entity(props);
+
+                        var c = document.createElement('canvas'), 
+                            ctx = c.getContext('2d'), 
+                            imgData;
+                        
+                        c.width = 16;
+                        c.height = 16;
+                        c.id = 'player_sprite';
+
+                        imgData = ctx.createImageData(c.width, c.height);
+
+                        var skin = { r: 235, g: 199, b: 161 };
                 };
 
                 this.setup = (function(self, settings) {

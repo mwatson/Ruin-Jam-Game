@@ -13,8 +13,8 @@
         font-family: 'PressStart';
         src: url('assets/fonts/prstartk.ttf');
 }
-body { margin: 0px; padding: 0px; background: #000; overflow: hidden; }
-canvas { cursor: none; }
+body { margin: 0px; padding: 0px; background: #888; overflow: hidden; }
+canvas { cursor: none; border: 1px solid #000; }
 </style>
 
 <script src="lib/lodash.js"></script>
@@ -31,29 +31,20 @@ canvas { cursor: none; }
 <script src="game/core/game.js"></script>
 
 <script src="game/definitions/assets.js"></script>
+<script src="game/definitions/sprites.js"></script>
 <!-- <script src="game/definitions/saves.js"></script> -->
 <script src="game/definitions/entity.js"></script>
+<script src="game/definitions/playersprites.js"></script>
 <script src="game/definitions/gamestates.js"></script>
 <script src="game/definitions/hud.js"></script>
 
 <script src="game/entity/entity.js"></script>
 <script src="game/entity/player.js"></script>
 
-<!--
-<script src="game/entity/components/collidable.js"></script>
-<script src="game/entity/components/emitter.js"></script>
-<script src="game/entity/components/hasprojectile.js"></script>
-<script src="game/entity/components/hasstatus.js"></script>
-<script src="game/entity/components/hurtable.js"></script>
-<script src="game/entity/components/iscamera.js"></script>
-<script src="game/entity/components/isenemy.js"></script>
-<script src="game/entity/components/isghost.js"></script>
-<script src="game/entity/components/isplayer.js"></script>
+<script src="game/entity/components/camera.js"></script>
+<script src="game/entity/components/player.js"></script>
 <script src="game/entity/components/movable.js"></script>
-<script src="game/entity/components/particle.js"></script>
-<script src="game/entity/components/projectile.js"></script>
 <script src="game/entity/components/renderable.js"></script>
--->
 
 <!--
 <script src="game/world/world.js"></script>

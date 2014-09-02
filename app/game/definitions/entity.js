@@ -12,14 +12,18 @@
                         speed: 8, 
                         components: {
                                 Renderable: {
-                                        color: '#000'
+                                        color: '#000',
+                                        sprites: 'player'
                                 }, 
                                 Movable: {
                                 }, 
-                                IsPlayer: {
-                                        damage: 1, // close attack damage (not bomb damage)
-                                        explodeDamage: 2, // exploding damage for ghosts that can explode
-                                        init: function(en) {
+                                Player: {
+                                        init: function(c) {
+
+                                                c.props.life = App.Tools.rand(0, 115);
+                                                c.props.gender = App.Tools.rand(0, 100);
+                                                c.props.genderID = App.Tools.rand(0, 1) ? 'M' : 'F';
+                                                c.props.sexuality = App.Tools.rand(0, 100);
                                         }
                                 }
                         }
@@ -33,7 +37,7 @@
                                 Movable: {
                                         acceleration: 0.4
                                 },
-                                IsCamera: {
+                                Camera: {
                                 }
                         }
                 }

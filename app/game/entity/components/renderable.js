@@ -25,23 +25,9 @@
 
                 this.attrs = {
                         color: settings.color,
-                        sprites: false, 
-                        spriteSet: '', 
+                        sprites: [], 
                         shadow: _.isUndefined(settings.shadow) ? false : settings.shadow
                 };
-
-                this.setSprites = function(sprites) {
-                        if(_.isUndefined(App.Defs.Sprites[sprites])) {
-                                this.attrs.sprites = false;
-                                this.attrs.spriteSet = '';
-                        }
-                        this.attrs.spriteSet = sprites;
-                        this.attrs.sprites = App.Defs.Sprites[sprites];
-                };
-
-                if(!_.isUndefined(settings.sprites)) {
-                        this.setSprites(settings.sprites);
-                }
 
                 this.initShake = function(duration, x, y) {
                         shakeTime = duration;
@@ -130,75 +116,17 @@
                                 yPos += bobInfo.y.cur;
                         }
 
-                        if(this.attrs.sprites) {
+                        if(this.attrs.sprites.length) {
 
-                                // figure out the frame based on the state
-                                curState = 'idle';
-                                if(en.state == 'walk') {
-
-                                        if(en.attrs.dir.x == 1) {
-                                                curState = 'walkRight';
-                                        } else if(en.attrs.dir.x == -1) {
-                                                curState = 'walkLeft';
-                                        }
-
-                                        if(_.isUndefined(this.attrs.sprites[curState])) {
-                                                curState = 'walk';
-                                        }
-                                } else if(en.state == 'dead') {
-                                        curState = 'dead';
-                                }
-
-                                if(_.isUndefined(this.attrs.sprites[curState])) {
-                                        curState = 'idle';
-                                }
-
-                                if(curState != prevState) {
-                                        // reset frame counter
-                                        curFrame = 0;
-                                        frameCtr = 0;
-                                        prevState = curState;
-                                }
-
-                                if(_.isUndefined(this.attrs.sprites[curState][curFrame])) {
-                                        curFrame = 0;
-                                        frameCtr = 0;
-                                }
-
-                                frameCtr += diff;
-                                if(frameCtr > this.attrs.sprites[curState][curFrame].duration) {
-                                        curFrame++;
-                                        frameCtr = 0;
-                                }
-
-                                if(_.isUndefined(this.attrs.sprites[curState][curFrame])) {
-                                        curFrame = 0;
-                                }
-
-                                App.Draw.get(canvasId).drawImg(
-                                        this.attrs.sprites[curState][curFrame].frame, 
-                                        xPos, 
-                                        yPos
+                                App.Draw.get(canvasId).drawImgData(
+                                        this.attrs.sprites[0],
+                                        xPos,
+                                        yPos, 
+                                        16, 
+                                        16, 
+                                        en.attrs.width,
+                                        en.attrs.height
                                 );
-
-                                if(en.is('HasStatus')) {
-                                        if(en.c('HasStatus').isFrozen()) {
-                                                statusCol = 'rgba(75,145,190,0.7)';
-                                        } else if(en.c('HasStatus').isSlimed()) {
-                                                statusCol = 'rgba(130,215,90,0.7)';
-                                        }
-                                        
-                                        if(statusCol.length) {
-                                                App.Draw.get(canvasId).ctx.globalCompositeOperation = "source-atop";
-                                                App.Draw.get(canvasId).fillRect(
-                                                        xPos, 
-                                                        yPos, 
-                                                        64, 
-                                                        64, 
-                                                        statusCol
-                                                );
-                                        }
-                                }
 
                         } else {
 

@@ -7,13 +7,12 @@
                 //
 
                 player: {
-                        width: 64, 
-                        height: 64, 
+                        width: 96, 
+                        height: 96, 
                         speed: 8, 
                         components: {
                                 Renderable: {
-                                        color: '#000',
-                                        sprites: 'player'
+                                        color: '#000'
                                 }, 
                                 Movable: {
                                 }, 
@@ -22,7 +21,7 @@
 
                                                 c.props.life = App.Tools.rand(0, 115);
                                                 c.props.gender = App.Tools.rand(0, 100);
-                                                c.props.genderID = App.Tools.rand(0, 1) ? 'M' : 'F';
+                                                c.props.genderID = App.Tools.rand(0, 1) ? 'm' : 'f';
                                                 c.props.sexuality = App.Tools.rand(0, 100);
                                         }
                                 }

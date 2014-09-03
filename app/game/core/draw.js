@@ -217,6 +217,8 @@
                         };
                         
                         this.ctx = this.el.getContext('2d');
+
+                        this.ctx.imageSmoothingEnabled = false;
                         
                         if(!_.isUndefined(props.style)) {
                                 var self = this;

@@ -113,6 +113,8 @@
                                 },
 
                                 update: function() {
+
+                                        App.Player.playerEnt.c('Player').behavior();
                                 }
                         }
                 }

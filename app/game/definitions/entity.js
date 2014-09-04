@@ -9,12 +9,13 @@
                 player: {
                         width: 96, 
                         height: 96, 
-                        speed: 8, 
+                        speed: 2, 
                         components: {
                                 Renderable: {
                                         color: '#000'
                                 }, 
                                 Movable: {
+                                        acceleration: 0.2
                                 }, 
                                 Player: {
                                         init: function(c) {

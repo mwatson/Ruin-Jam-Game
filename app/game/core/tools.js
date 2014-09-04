@@ -159,7 +159,7 @@
                                 if(!App.Assets.Fonts[asset.name].loaded) {
                                         w = App.Draw.get('hud').measureText('amazing awesome!', '24px ' + asset.name);
                                         // hmm
-                                        if(1 || App.Assets.Fonts[asset.name].initWidth.width != w.width) {
+                                        if(App.Assets.Fonts[asset.name].initWidth.width != w.width) {
                                                 App.Assets.Fonts[asset.name].loaded = true;
                                                 App.Defs.Assets.Loaded.Fonts[asset.name] = true;
                                                 App.Defs.Assets.Loaded.Complete = self.assetsCheckComplete();

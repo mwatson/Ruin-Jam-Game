@@ -7,9 +7,9 @@
                         App.Draw.get('hud').writeText(
                                 "LOADING",
                                 App.Game.settings.hud.mainFont, 
-                                '#FFF', 
-                                100, 
-                                100
+                                '#000', 
+                                50, 
+                                250
                         );
                 }, 
 

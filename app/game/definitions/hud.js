@@ -16,9 +16,9 @@
                 titleScreen: function() {
 
                         App.Draw.get('hud').writeText(
-                                "A GAME",
+                                "TITLE",
                                 App.Game.settings.hud.mainFont, 
-                                '#FFF', 
+                                '#000', 
                                 50, 
                                 250
                         );
@@ -26,7 +26,7 @@
                         App.Draw.get('hud').writeText(
                                 "PRESS SPACE TO BEGIN",
                                 App.Game.settings.hud.smallFont, 
-                                '#FFF', 
+                                '#000', 
                                 50, 
                                 280
                         );

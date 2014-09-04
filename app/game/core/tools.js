@@ -30,7 +30,7 @@
                         return arr;
                 };
 
-                this.debugColor = '#FFF';
+                this.debugColor = '#000';
 
                 this.printFPS = function(ontoLayer, counts) {
                         var avgs = {};

@@ -25,35 +25,36 @@
                 function generateHair(imgData, hairDone, hairGrid, color, x, y) {
 
                         if(!_.isUndefined(hairDone[x + '_' + y])) {
-                                return;
+                                return 0;
                         }
 
                         if(_.isUndefined(hairGrid[y]) || _.isUndefined(hairGrid[y][x])) {
-                                return;
+                                return 0;
                         }
 
                         hairDone[x + '_' + y] = true;
 
                         if(hairGrid[y][x] == 0) {
-                                return;
+                                return 0;
                         }
 
                         var ch = App.Tools.rand(1, 5);
                         if(ch > hairGrid[y][x]) {
-                                return;
+                                return 0;
                         }
 
                         setPixel(imgData, x, y, color.r, color.g, color.b, 255);
 
                         for(var i = -1; i <= 1; i++) {
                                 for(var j = -1; j <= 1; j++) {
-                                        if(j == 0 && i == 0) {
-                                                continue;
-                                        }
-
+                                        //if(j == 0 && i == 0) {
+                                                //continue;
+                                        //}
                                         generateHair(imgData, hairDone, hairGrid, color, x + j, y + i);
                                 }
                         }
+
+                        return 1;
                 }
 
                 this.init = function() {
@@ -75,19 +76,37 @@
 
                         imgData = ctx.createImageData(c.width, c.height);
 
-                        var gId = this.playerEnt.c('Player').props.genderID;
-
-                        var skin = App.Defs.PlayerSprites.skin[App.Tools.rand(0, App.Defs.PlayerSprites.skin.length - 1)], 
-                            hair = { r: 106, g: 78, b: 66 }, 
-                            shirt = { r: 233, g: 159, b: 0 }, 
-                            shirtshadow = { r: 175, g: 119, b: 0 }, 
-                            pants = { r: 0, g: 6, b: 81 }, 
+                        var gId = this.playerEnt.c('Player').props.genderID, 
+                            rSkin = App.Tools.rand(0, App.Defs.PlayerSprites.skin.length - 1), 
+                            skin = App.Defs.PlayerSprites.skin[rSkin], 
+                            rHair = App.Tools.rand(0, App.Defs.PlayerSprites.hair.length - 1), 
+                            hair = App.Defs.PlayerSprites.hair[rHair], 
+                            shirt = { r: 0, g: 0, b: 0 }, 
+                            shirtshadow = { r: 0, g: 0, b: 0 }, 
+                            pants = { r: 0, g: 0, b: 0 }, 
+                            pantsdark = { r: 0, g: 0, b: 0 }, 
                             eyes = { r: 0, g: 0, b: 0 }, 
                             bodyGrid = App.Defs.PlayerSprites[gId].adult.bodyMap, 
                             hairGrid = App.Defs.PlayerSprites[gId].adult.hairMap, 
                             x, y, its, 
                             hairStart = { x: -1, y: -1 }, 
                             hairDone = {};
+
+                        shirt.r = App.Tools.rand(0, 255);
+                        shirt.g = App.Tools.rand(0, 255);
+                        shirt.b = App.Tools.rand(0, 255);
+
+                        shirtshadow.r = Math.floor((shirt.r + 32) / 2);
+                        shirtshadow.g = Math.floor((shirt.g + 32) / 2);
+                        shirtshadow.b = Math.floor((shirt.b + 32) / 2);
+
+                        pants.r = App.Tools.rand(0, 255);
+                        pants.g = App.Tools.rand(0, 255);
+                        pants.b = App.Tools.rand(0, 255);
+
+                        pantsdark.r = Math.floor((pants.r + 32) / 2);
+                        pantsdark.g = Math.floor((pants.g + 32) / 2);
+                        pantsdark.b = Math.floor((pants.b + 32) / 2);
 
                         for(y = 0; y < bodyGrid.length; y++) {
                                 for(x = 0; x < bodyGrid[y].length; x++) {
@@ -116,7 +135,11 @@
                                                 case 5:
                                                         cols = pants;
                                                         break;
+                                                case 6:
+                                                        cols = pantsdark;
+                                                        break;
                                         }
+
                                         setPixel(imgData, x, y, cols.r, cols.g, cols.b, 255);
                                 }
                         }

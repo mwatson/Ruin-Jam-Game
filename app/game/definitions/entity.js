@@ -9,7 +9,7 @@
                 player: {
                         width: 96, 
                         height: 96, 
-                        speed: 2, 
+                        speed: 1.5, 
                         components: {
                                 Renderable: {
                                         color: '#000'

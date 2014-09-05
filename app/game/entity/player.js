@@ -67,15 +67,6 @@
 
                         this.playerEnt = new App.Objects.Entity(props);
 
-                        var c = document.createElement('canvas'), 
-                            ctx = c.getContext('2d'), 
-                            imgData;
-
-                        c.width = 16;
-                        c.height = 16;
-
-                        imgData = ctx.createImageData(c.width, c.height);
-
                         var gId = this.playerEnt.c('Player').props.genderID, 
                             rSkin = App.Tools.rand(0, App.Defs.PlayerSprites.skin.length - 1), 
                             skin = App.Defs.PlayerSprites.skin[rSkin], 
@@ -88,7 +79,7 @@
                             eyes = { r: 0, g: 0, b: 0 }, 
                             bodyGrid = App.Defs.PlayerSprites[gId].adult.bodyMap, 
                             hairGrid = App.Defs.PlayerSprites[gId].adult.hairMap, 
-                            x, y, its, 
+                            x, y, g, its, 
                             hairStart = { x: -1, y: -1 }, 
                             hairDone = {};
 
@@ -108,51 +99,60 @@
                         pantsdark.g = Math.floor((pants.g + 32) / 2);
                         pantsdark.b = Math.floor((pants.b + 32) / 2);
 
-                        for(y = 0; y < bodyGrid.length; y++) {
-                                for(x = 0; x < bodyGrid[y].length; x++) {
-                                        var cols;
-                                        if(hairGrid[y][x] == 5 && hairStart.x == -1) {
-                                                hairStart.x = x;
-                                                hairStart.y = y;
-                                        }
+                        for(g = 0; g < bodyGrid.length; g++) {
 
-                                        if(!bodyGrid[y][x]) {
-                                                continue;
-                                        }
-                                        switch(bodyGrid[y][x]) {
-                                                case 1:
-                                                        cols = skin;
-                                                        break;
-                                                case 2:
-                                                        cols = eyes;
-                                                        break;
-                                                case 3:
-                                                        cols = shirt;
-                                                        break;
-                                                case 4:
-                                                        cols = shirtshadow;
-                                                        break;
-                                                case 5:
-                                                        cols = pants;
-                                                        break;
-                                                case 6:
-                                                        cols = pantsdark;
-                                                        break;
-                                        }
+                                var c = document.createElement('canvas'), 
+                                    ctx = c.getContext('2d'), 
+                                    imgData;
 
-                                        setPixel(imgData, x, y, cols.r, cols.g, cols.b, 255);
+                                c.width = 32;
+                                c.height = 16;
+
+                                imgData = ctx.createImageData(c.width, c.height);
+
+                                for(y = 0; y < bodyGrid[g].length; y++) {
+                                        for(x = 0; x < bodyGrid[g][y].length; x++) {
+                                                var cols;
+                                                if(hairGrid[y][x] == 5 && hairStart.x == -1) {
+                                                        hairStart.x = x;
+                                                        hairStart.y = y;
+                                                }
+
+                                                if(!bodyGrid[g][y][x]) {
+                                                        continue;
+                                                }
+                                                switch(bodyGrid[g][y][x]) {
+                                                        case 1:
+                                                                cols = skin;
+                                                                break;
+                                                        case 2:
+                                                                cols = eyes;
+                                                                break;
+                                                        case 3:
+                                                                cols = shirt;
+                                                                break;
+                                                        case 4:
+                                                                cols = shirtshadow;
+                                                                break;
+                                                        case 5:
+                                                                cols = pants;
+                                                                break;
+                                                        case 6:
+                                                                cols = pantsdark;
+                                                                break;
+                                                }
+
+                                                setPixel(imgData, x, y, cols.r, cols.g, cols.b, 255);
+                                        }
                                 }
+
+                                generateHair(imgData, hairDone, hairGrid, hair, hairStart.x, hairStart.y);
+
+                                ctx.putImageData(imgData, 0, 0);
+                                ctx.putImageData(imgData, 16, 0);
+
+                                this.playerEnt.c('Renderable').attrs.sprites.push(c);
                         }
-
-                        its = 0;
-                        x = hairStart.x;
-                        y = hairStart.y;
-
-                        generateHair(imgData, hairDone, hairGrid, hair, x, y);
-
-                        ctx.putImageData(imgData, 0, 0);
-
-                        this.playerEnt.c('Renderable').attrs.sprites.push(c);
                 };
 
                 this.setup = (function(self, settings) {

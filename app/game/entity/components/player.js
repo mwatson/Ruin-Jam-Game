@@ -21,11 +21,13 @@
 
                         if(target.x < 0 && target.y < 0) {
                                 target.x = App.Tools.rand(75, 565);
-                                target.y = App.Tools.rand(75, 405);
+                                target.y = App.Tools.rand(200, 250);
                         }
 
                         xDiff = Math.abs(target.x - this.en.attrs.x);
-                        if(target.x > this.en.attrs.x && xDiff > 16) {
+                        if(target.x < 0) {
+                                xDir = 0;
+                        } else if(target.x > this.en.attrs.x && xDiff > 16) {
                                 xDir = 1;
                         } else if(target.x < this.en.attrs.x && xDiff > 16) {
                                 xDir = -1;
@@ -35,7 +37,9 @@
                         }
 
                         yDiff = Math.abs(target.y - this.en.attrs.y);
-                        if(target.y > this.en.attrs.y && yDiff > 16) {
+                        if(target.y < 0) {
+                                yDir = 0;
+                        } else if(target.y > this.en.attrs.y && yDiff > 16) {
                                 yDir = 1;
                         } else if(target.y < this.en.attrs.y && yDiff > 16) {
                                 yDir = -1;

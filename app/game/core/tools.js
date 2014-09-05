@@ -44,6 +44,7 @@
                         });
 
                         var canvas = App.Draw.get(ontoLayer);
+                        /*
                         canvas.writeDirect(
                                 avgs.draw + ' fps', 
                                 App.Game.settings.debug.font, 
@@ -58,6 +59,7 @@
                                 canvas.width() - 140, 
                                 canvas.height() - 60
                         );
+                        */
                         canvas.writeText(
                                 App.Game.versionString, 
                                 App.Game.settings.debug.font, 

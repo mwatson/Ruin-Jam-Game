@@ -22,7 +22,7 @@
                         imgData.data[index +  3] = a;
                 }
 
-                function generateHair(imgData, hairDone, hairGrid, color, x, y) {
+                function generateHair(hairDone, hairGrid, x, y) {
 
                         if(!_.isUndefined(hairDone[x + '_' + y])) {
                                 return 0;
@@ -32,7 +32,7 @@
                                 return 0;
                         }
 
-                        hairDone[x + '_' + y] = true;
+                        hairDone[x + '_' + y] = [ x, y, 0 ];
 
                         if(hairGrid[y][x] == 0) {
                                 return 0;
@@ -41,16 +41,16 @@
                         var ch = App.Tools.rand(1, 5);
                         if(ch > hairGrid[y][x]) {
                                 return 0;
+                        } else {
+                                hairDone[x + '_' + y][2] = 1;
                         }
-
-                        setPixel(imgData, x, y, color.r, color.g, color.b, 255);
 
                         for(var i = -1; i <= 1; i++) {
                                 for(var j = -1; j <= 1; j++) {
-                                        //if(j == 0 && i == 0) {
-                                                //continue;
-                                        //}
-                                        generateHair(imgData, hairDone, hairGrid, color, x + j, y + i);
+                                        if(j == 0 && i == 0) {
+                                                continue;
+                                        }
+                                        generateHair(hairDone, hairGrid, x + j, y + i);
                                 }
                         }
 
@@ -80,7 +80,6 @@
                             bodyGrid = App.Defs.PlayerSprites[gId].adult.bodyMap, 
                             hairGrid = App.Defs.PlayerSprites[gId].adult.hairMap, 
                             x, y, g, its, 
-                            hairStart = { x: -1, y: -1 }, 
                             hairDone = {};
 
                         shirt.r = App.Tools.rand(0, 255);
@@ -99,6 +98,8 @@
                         pantsdark.g = Math.floor((pants.g + 32) / 2);
                         pantsdark.b = Math.floor((pants.b + 32) / 2);
 
+                        generateHair(hairDone, hairGrid, 5, 1);
+
                         for(g = 0; g < bodyGrid.length; g++) {
 
                                 var c = document.createElement('canvas'), 
@@ -113,10 +114,6 @@
                                 for(y = 0; y < bodyGrid[g].length; y++) {
                                         for(x = 0; x < bodyGrid[g][y].length; x++) {
                                                 var cols;
-                                                if(hairGrid[y][x] == 5 && hairStart.x == -1) {
-                                                        hairStart.x = x;
-                                                        hairStart.y = y;
-                                                }
 
                                                 if(!bodyGrid[g][y][x]) {
                                                         continue;
@@ -146,12 +143,42 @@
                                         }
                                 }
 
-                                generateHair(imgData, hairDone, hairGrid, hair, hairStart.x, hairStart.y);
+                                for(x in hairDone) {
+                                        if(hairDone[x].hasOwnProperty()) {
+                                                continue;
+                                        }
+                                        if(!hairDone[x][2]) {
+                                                continue;
+                                        }
+                                        setPixel(imgData, hairDone[x][0], hairDone[x][1], hair.r, hair.g, hair.b, 255);
+                                }
 
-                                ctx.putImageData(imgData, 0, 0);
-                                ctx.putImageData(imgData, 16, 0);
+                                var scratch = document.createElement('canvas'), 
+                                    scCtx = scratch.getContext('2d');
 
-                                this.playerEnt.c('Renderable').attrs.sprites.push(c);
+                                scratch.width = 16;
+                                scratch.height = 16;
+
+                                scCtx.putImageData(imgData, 0, 0);
+                                ctx.drawImage(scratch, 0, 0, 16, 16, 0, 0, 16, 16);
+
+                                scCtx.clearRect(0, 0, 16, 16);
+                                scCtx.scale(-1, 1);
+                                scCtx.drawImage(c, -16, 0);
+
+                                ctx.drawImage(scratch, 0, 0, 16, 16, 16, 0, 16, 16);
+
+                                var st = 'idle';
+                                if(g == 0) {
+                                        st = 'idle';
+                                } else if(g <= 2) {
+                                        st = 'walk';
+                                }
+
+                                this.playerEnt.c('Renderable').attrs.sprites[st].push({
+                                        frame: c, 
+                                        duration: 100
+                                });
                         }
                 };
 

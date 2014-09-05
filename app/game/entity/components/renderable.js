@@ -25,7 +25,10 @@
 
                 this.attrs = {
                         color: settings.color,
-                        sprites: [], 
+                        sprites: {
+                                idle: [],
+                                walk: []
+                        }, 
                         shadow: _.isUndefined(settings.shadow) ? false : settings.shadow
                 };
 
@@ -116,16 +119,45 @@
                                 yPos += bobInfo.y.cur;
                         }
 
-                        if(this.attrs.sprites.length) {
+                        if(this.attrs.sprites) {
+
+                                curState = en.state;
+                                if(_.isUndefined(this.attrs.sprites[curState])) {
+                                        curState = 'idle';
+                                }
+
+                                if(curState != prevState) {
+                                        // reset frame counter
+                                        curFrame = 0;
+                                        frameCtr = 0;
+                                        prevState = curState;
+                                }
+
+                                if(_.isUndefined(this.attrs.sprites[curState][curFrame])) {
+                                        curFrame = 0;
+                                        frameCtr = 0;
+                                }
+
+                                frameCtr += diff;
+                                if(frameCtr > this.attrs.sprites[curState][curFrame].duration) {
+                                        curFrame++;
+                                        frameCtr = 0;
+                                }
+
+                                if(_.isUndefined(this.attrs.sprites[curState][curFrame])) {
+                                        curFrame = 0;
+                                }
 
                                 App.Draw.get(canvasId).drawImgData(
-                                        this.attrs.sprites[0],
+                                        this.attrs.sprites[curState][curFrame].frame,
                                         xPos,
                                         yPos, 
                                         16, 
                                         16, 
                                         en.attrs.width,
-                                        en.attrs.height
+                                        en.attrs.height, 
+                                        xDir < 0 ? 16 : 0, 
+                                        0
                                 );
 
                         } else {

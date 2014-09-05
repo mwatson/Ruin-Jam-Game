@@ -448,7 +448,7 @@
                                 return false;
                         };
 
-                        this.drawImgData = function(imgData, x, y, width, height, dW, dH) {
+                        this.drawImgData = function(imgData, x, y, width, height, dW, dH, dX, dY) {
                                 var coords = this.calcXY(x, y);
                                 if(_.isUndefined(dW)) {
                                         dW = width;
@@ -456,11 +456,17 @@
                                 if(_.isUndefined(dH)) {
                                         dH = height;
                                 }
+                                if(_.isUndefined(dX)) {
+                                        dX = 0;
+                                }
+                                if(_.isUndefined(dY)) {
+                                        dY = 0;
+                                }
                                 if(this.checkCoords(coords.x, coords.y, width, height)) {
                                         this.ctx.drawImage(
                                                 imgData, 
-                                                0, 
-                                                0, 
+                                                dX, 
+                                                dY, 
                                                 width, 
                                                 height, 
                                                 coords.x, 

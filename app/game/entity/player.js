@@ -57,9 +57,35 @@
                         return 1;
                 }
 
+
+                function hairGridStart(hairGrid) {
+                        var hairStart = { x: -1, y: -1 };
+                        for(var y = 0; y < hairGrid.length; y++) {
+                                for(var x = 0; x < hairGrid[y].length; x++) {
+                                        if(hairGrid[y][x] == 5) {
+                                                hairStart.x = x;
+                                                hairStart.y = y;
+                                                break;
+                                        }
+                                }
+                                if(hairStart.x >= 0 && hairStart.y >= 0) {
+                                        break;
+                                }
+                        }
+
+                        return hairStart;
+                }
+
                 this.init = function() {
 
-                        var props = App.Definitions.get('Entity', 'player');
+                        var props = App.Definitions.get('Entity', 'player'), 
+                            stages = [
+                                'baby', 
+                                'child', 
+                                'teen', 
+                                'adult', 
+                                //'elderly'
+                            ];
 
                         props.x = 100;
                         props.y = 100;
@@ -78,10 +104,9 @@
                             shirtshadow = { r: 0, g: 0, b: 0 }, 
                             pants = { r: 0, g: 0, b: 0 }, 
                             pantsdark = { r: 0, g: 0, b: 0 }, 
-                            bodyGrid = App.Defs.PlayerSprites[gId].teen.bodyMap, 
-                            hairGrid = App.Defs.PlayerSprites[gId].teen.hairMap, 
-                            x, y, g, its, 
-                            hairStart = { x: -1, y: -1 }, 
+                            bodyGrid = false, 
+                            hairGrid = false, 
+                            i, x, y, g, its, 
                             hairDone = {};
 
                         shirt.r = App.Tools.rand(0, 255);
@@ -100,100 +125,103 @@
                         pantsdark.g = Math.floor((pants.g + 32) / 2);
                         pantsdark.b = Math.floor((pants.b + 32) / 2);
 
-                        for(y = 0; y < hairGrid.length; y++) {
-                                for(x = 0; x < hairGrid[y].length; x++) {
-                                        if(hairGrid[y][x] == 5) {
-                                                hairStart.x = x;
-                                                hairStart.y = y;
-                                                break;
+                        for(i = 0; i < stages.length; i++) {
+
+                                bodyGrid = App.Defs.PlayerSprites[gId][stages[i]].bodyMap;
+                                hairGrid = App.Defs.PlayerSprites[gId][stages[i]].hairMap;
+
+                                hairDone = {};
+                                hairStart = hairGridStart(hairGrid);
+                                generateHair(hairDone, hairGrid, hairStart.x, hairStart.y);
+
+                                for(g = 0; g < bodyGrid.length; g++) {
+
+                                        var c = document.createElement('canvas'), 
+                                            ctx = c.getContext('2d'), 
+                                            imgData;
+
+                                        c.width = 32;
+                                        c.height = 16;
+
+                                        imgData = ctx.createImageData(c.width, c.height);
+
+
+                                        for(y = 0; y < bodyGrid[g].length; y++) {
+                                                for(x = 0; x < bodyGrid[g][y].length; x++) {
+                                                        var cols;
+
+                                                        if(!bodyGrid[g][y][x]) {
+                                                                continue;
+                                                        }
+                                                        switch(bodyGrid[g][y][x]) {
+                                                                case 1:
+                                                                        cols = skin;
+                                                                        break;
+                                                                case 2:
+                                                                        cols = eyes;
+                                                                        break;
+                                                                case 3:
+                                                                        cols = shirt;
+                                                                        break;
+                                                                case 4:
+                                                                        cols = shirtshadow;
+                                                                        break;
+                                                                case 5:
+                                                                        cols = pants;
+                                                                        break;
+                                                                case 6:
+                                                                        cols = pantsdark;
+                                                                        break;
+                                                        }
+
+                                                        setPixel(imgData, x, y, cols.r, cols.g, cols.b, 255);
+                                                }
                                         }
-                                }
-                                if(hairStart.x >= 0 && hairStart.y >= 0) {
-                                        break;
-                                }
-                        }
 
-                        generateHair(hairDone, hairGrid, hairStart.x, hairStart.y);
-
-                        for(g = 0; g < bodyGrid.length; g++) {
-
-                                var c = document.createElement('canvas'), 
-                                    ctx = c.getContext('2d'), 
-                                    imgData;
-
-                                c.width = 32;
-                                c.height = 16;
-
-                                imgData = ctx.createImageData(c.width, c.height);
-
-                                for(y = 0; y < bodyGrid[g].length; y++) {
-                                        for(x = 0; x < bodyGrid[g][y].length; x++) {
-                                                var cols;
-
-                                                if(!bodyGrid[g][y][x]) {
+                                        for(x in hairDone) {
+                                                if(hairDone[x].hasOwnProperty()) {
                                                         continue;
                                                 }
-                                                switch(bodyGrid[g][y][x]) {
-                                                        case 1:
-                                                                cols = skin;
-                                                                break;
-                                                        case 2:
-                                                                cols = eyes;
-                                                                break;
-                                                        case 3:
-                                                                cols = shirt;
-                                                                break;
-                                                        case 4:
-                                                                cols = shirtshadow;
-                                                                break;
-                                                        case 5:
-                                                                cols = pants;
-                                                                break;
-                                                        case 6:
-                                                                cols = pantsdark;
-                                                                break;
+                                                if(!hairDone[x][2]) {
+                                                        continue;
                                                 }
-
-                                                setPixel(imgData, x, y, cols.r, cols.g, cols.b, 255);
+                                                setPixel(imgData, hairDone[x][0], hairDone[x][1], hair.r, hair.g, hair.b, 255);
                                         }
-                                }
 
-                                for(x in hairDone) {
-                                        if(hairDone[x].hasOwnProperty()) {
-                                                continue;
+                                        var scratch = document.createElement('canvas'), 
+                                            scCtx = scratch.getContext('2d');
+
+                                        scratch.width = 16;
+                                        scratch.height = 16;
+
+                                        scCtx.putImageData(imgData, 0, 0);
+                                        ctx.drawImage(scratch, 0, 0, 16, 16, 0, 0, 16, 16);
+
+                                        scCtx.clearRect(0, 0, 16, 16);
+                                        scCtx.scale(-1, 1);
+                                        scCtx.drawImage(c, -16, 0);
+
+                                        ctx.drawImage(scratch, 0, 0, 16, 16, 16, 0, 16, 16);
+
+                                        var st = 'idle';
+                                        if(g == 0) {
+                                                st = 'idle';
+                                        } else if(g <= 2) {
+                                                st = 'walk';
                                         }
-                                        if(!hairDone[x][2]) {
-                                                continue;
+
+                                        if(_.isUndefined(this.playerEnt.c('Renderable').attrs.sprites[stages[i]])) {
+                                                this.playerEnt.c('Renderable').attrs.sprites[stages[i]] = {};
                                         }
-                                        setPixel(imgData, hairDone[x][0], hairDone[x][1], hair.r, hair.g, hair.b, 255);
+                                        if(_.isUndefined(this.playerEnt.c('Renderable').attrs.sprites[stages[i]][st])) {
+                                                this.playerEnt.c('Renderable').attrs.sprites[stages[i]][st] = [];
+                                        }
+
+                                        this.playerEnt.c('Renderable').attrs.sprites[stages[i]][st].push({
+                                                frame: c, 
+                                                duration: 100
+                                        });
                                 }
-
-                                var scratch = document.createElement('canvas'), 
-                                    scCtx = scratch.getContext('2d');
-
-                                scratch.width = 16;
-                                scratch.height = 16;
-
-                                scCtx.putImageData(imgData, 0, 0);
-                                ctx.drawImage(scratch, 0, 0, 16, 16, 0, 0, 16, 16);
-
-                                scCtx.clearRect(0, 0, 16, 16);
-                                scCtx.scale(-1, 1);
-                                scCtx.drawImage(c, -16, 0);
-
-                                ctx.drawImage(scratch, 0, 0, 16, 16, 16, 0, 16, 16);
-
-                                var st = 'idle';
-                                if(g == 0) {
-                                        st = 'idle';
-                                } else if(g <= 2) {
-                                        st = 'walk';
-                                }
-
-                                this.playerEnt.c('Renderable').attrs.sprites[st].push({
-                                        frame: c, 
-                                        duration: 100
-                                });
                         }
                 };
 

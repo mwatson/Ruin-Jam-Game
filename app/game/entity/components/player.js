@@ -5,6 +5,7 @@
                 this.en = entity;
 
                 this.props = {
+                        stage: 'baby', 
                         life: 75, 
                         gender: 0, // scale of 0 (cis) - 100 (trans)
                         genderID: '',

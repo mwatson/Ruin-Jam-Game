@@ -4,6 +4,7 @@
 
                 var en = entity, 
                     // store the state for sprites
+                    curStage = '';
                     curState = '', 
                     prevState = '', 
                     curFrame = 0, 
@@ -25,10 +26,7 @@
 
                 this.attrs = {
                         color: settings.color,
-                        sprites: {
-                                idle: [],
-                                walk: []
-                        }, 
+                        sprites: {}, 
                         shadow: _.isUndefined(settings.shadow) ? false : settings.shadow
                 };
 
@@ -121,8 +119,9 @@
 
                         if(this.attrs.sprites) {
 
+                                curStage = en.c('Player').props.stage;
                                 curState = en.state;
-                                if(_.isUndefined(this.attrs.sprites[curState])) {
+                                if(_.isUndefined(this.attrs.sprites[curStage][curState])) {
                                         curState = 'idle';
                                 }
 
@@ -133,23 +132,23 @@
                                         prevState = curState;
                                 }
 
-                                if(_.isUndefined(this.attrs.sprites[curState][curFrame])) {
+                                if(_.isUndefined(this.attrs.sprites[curStage][curState][curFrame])) {
                                         curFrame = 0;
                                         frameCtr = 0;
                                 }
 
                                 frameCtr += diff;
-                                if(frameCtr > this.attrs.sprites[curState][curFrame].duration) {
+                                if(frameCtr > this.attrs.sprites[curStage][curState][curFrame].duration) {
                                         curFrame++;
                                         frameCtr = 0;
                                 }
 
-                                if(_.isUndefined(this.attrs.sprites[curState][curFrame])) {
+                                if(_.isUndefined(this.attrs.sprites[curStage][curState][curFrame])) {
                                         curFrame = 0;
                                 }
 
                                 App.Draw.get(canvasId).drawImgData(
-                                        this.attrs.sprites[curState][curFrame].frame,
+                                        this.attrs.sprites[curStage][curState][curFrame].frame,
                                         xPos,
                                         yPos, 
                                         16, 

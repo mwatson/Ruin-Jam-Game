@@ -1,0 +1,29 @@
+Generate a timeline:
+
+(not to scale example)
+0 ---- Event ---- 15 --- Event ----------- 45 -------- Event --- 65 ------- 85 Death
+
+Scale: 
+1min (realtime) = 1day ? -- too long (avg person will take 65 - 85 days)
+1min (realtime) = 1month ? -- 85yr * 12 = 1020 months. 1020 mins = 17 hours (too short, probably)
+1min (realtime) = 1week ? -- 85yr * 52 = 4420 weeks, 73 hours (3 days)
+1hr (rt) = 1 month? -- 85 * 12 = 1020, 42 days
+
+
+30 days = 85 yrs, ~3 yrs per day, 1 year = 8 hours, every hour = 1.5mo
+
+Phases (years inclusive):
+baby: 0 - 3 years
+child: 4 - 11 years
+teen: 12 - 19 years
+adult: 20 - 59 years
+elderly: 60 - ?? years
+
+Lifespan generation should be a curve:
+- spans from 65 - 85 are most likely
+- 85 - 95 equally likely to 55 - 65 etc
+- cap is 110
+- lifespans below 45 are very unlikely, tied to disease usually
+
+Disease/Disorders
+- 

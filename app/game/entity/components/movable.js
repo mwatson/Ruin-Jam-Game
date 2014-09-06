@@ -56,7 +56,7 @@
 
                         en.setPosition(newPos.x, newPos.y);
 
-                        if(xDir !== 0) {
+                        if(xDir !== 0 || yDir !== 0) {
                                 en.changeState('walk');
                         } else {
                                 en.changeState('idle');

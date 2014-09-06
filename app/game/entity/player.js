@@ -72,14 +72,16 @@
                             skin = App.Defs.PlayerSprites.skin[rSkin], 
                             rHair = App.Tools.rand(0, App.Defs.PlayerSprites.hair.length - 1), 
                             hair = App.Defs.PlayerSprites.hair[rHair], 
+                            rEyes = App.Tools.rand(0, App.Defs.PlayerSprites.eyes.length - 1), 
+                            eyes = App.Defs.PlayerSprites.eyes[rEyes], 
                             shirt = { r: 0, g: 0, b: 0 }, 
                             shirtshadow = { r: 0, g: 0, b: 0 }, 
                             pants = { r: 0, g: 0, b: 0 }, 
                             pantsdark = { r: 0, g: 0, b: 0 }, 
-                            eyes = { r: 0, g: 0, b: 0 }, 
-                            bodyGrid = App.Defs.PlayerSprites[gId].adult.bodyMap, 
-                            hairGrid = App.Defs.PlayerSprites[gId].adult.hairMap, 
+                            bodyGrid = App.Defs.PlayerSprites[gId].teen.bodyMap, 
+                            hairGrid = App.Defs.PlayerSprites[gId].teen.hairMap, 
                             x, y, g, its, 
+                            hairStart = { x: -1, y: -1 }, 
                             hairDone = {};
 
                         shirt.r = App.Tools.rand(0, 255);
@@ -98,7 +100,20 @@
                         pantsdark.g = Math.floor((pants.g + 32) / 2);
                         pantsdark.b = Math.floor((pants.b + 32) / 2);
 
-                        generateHair(hairDone, hairGrid, 5, 1);
+                        for(y = 0; y < hairGrid.length; y++) {
+                                for(x = 0; x < hairGrid[y].length; x++) {
+                                        if(hairGrid[y][x] == 5) {
+                                                hairStart.x = x;
+                                                hairStart.y = y;
+                                                break;
+                                        }
+                                }
+                                if(hairStart.x >= 0 && hairStart.y >= 0) {
+                                        break;
+                                }
+                        }
+
+                        generateHair(hairDone, hairGrid, hairStart.x, hairStart.y);
 
                         for(g = 0; g < bodyGrid.length; g++) {
 

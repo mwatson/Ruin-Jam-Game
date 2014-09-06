@@ -6,7 +6,7 @@
 
                         App.Draw.get('hud').writeText(
                                 "LOADING",
-                                App.Game.settings.hud.mainFont, 
+                                App.Game.settings.hud.medFont, 
                                 '#000', 
                                 50, 
                                 250

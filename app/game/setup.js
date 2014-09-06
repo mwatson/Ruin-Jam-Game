@@ -50,6 +50,8 @@ App.init = function() {
                         hud: {
                                 titleFont: '64px PressStart', 
                                 mainFont: '56px PressStart',
+                                bigFont: '44px PressStart', 
+                                medFont: '36px PressStart', 
                                 smallFont: '16px PressStart'
                         }, 
 

@@ -115,6 +115,7 @@
                                 update: function() {
 
                                         App.Player.playerEnt.c('Player').behavior();
+                                        App.Player.playerEnt.c('Player').runTimers();
                                 }
                         }
                 }

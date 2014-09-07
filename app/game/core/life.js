@@ -4,19 +4,19 @@
         // which are unlocked via the timer mechanisms
 
         // for now the timescale is (realtime to gametime): 
-        // 1hr = 1.5mo
-        // 60m = 90d
-        // 1m = 0.667d
+        // 1m = 1d
+        // 1h = 60d
+        // 1d = 1440d, ~4yrs
+
+        // common gametimes to real times
+        // 85yrs = ~21d
+        // 65yrs = ~16d
+        // 10yrs = 2.5d
+        // 20yrs = 5d
+        // 1yr = 6hr
 
         var life = function() {
 
-                var timers = {};
-
-                this.addTimer = function(timerName, timerCount) {
-                };
-
-                this.removeTimer = function(timerName) {
-                };
         };
 
         root.App.Objects.Life = life;

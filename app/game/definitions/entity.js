@@ -18,13 +18,6 @@
                                         acceleration: 0.2
                                 }, 
                                 Player: {
-                                        init: function(c) {
-
-                                                c.props.life = App.Tools.rand(0, 115);
-                                                c.props.gender = App.Tools.rand(0, 100);
-                                                c.props.genderID = App.Tools.rand(0, 1) ? 'm' : 'f';
-                                                c.props.sexuality = App.Tools.rand(0, 100);
-                                        }
                                 }
                         }
                 }, 

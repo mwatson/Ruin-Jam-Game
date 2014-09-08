@@ -6,6 +6,12 @@
 
                         tick: {
                                 draw: function() {
+                                        /*
+                                        App.Draw.get('background').clearRect(0, 0, 640, 480);
+                                        App.Draw.get('background').fillRect(
+                                                0, 0, 640, 480, App.Game.bgColor
+                                        );
+                                        */
                                 }, 
 
                                 update: function() {

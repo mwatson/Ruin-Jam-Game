@@ -53,6 +53,8 @@
                         App.Controls    = new App.Objects.Controls();
                         App.Player      = new App.Objects.Player(settings.player);
 
+                        App.Draw.get('background').setBgColor('#EEE');
+
                         // init savefiles (TODO: automate this?)
                         //App.Saves = {};
                         //App.Saves.StatsSave = new App.Objects.SaveFile(App.Defs.Saves_StatsSave);
@@ -173,6 +175,8 @@
 
                 this.gameSpeed = 50;
 
+                this.bgColor = '#EEE';
+
                 this.lastDraw = null;
                 var plax = -1, plAccum = 0;
                 this.drawOps = function(interpolation) {
@@ -187,6 +191,8 @@
                         App.Draw.get('background').clear();
 
                         //App.Draw.drawTransitions(interpolation);
+
+                        App.Defs.GameStates.all.tick.draw(interpolation, moveDelta);
 
                         App.Defs.GameStates[this.gameState].tick.draw(interpolation, moveDelta);
 

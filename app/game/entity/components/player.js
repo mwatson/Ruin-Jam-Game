@@ -69,7 +69,6 @@
                 this.addTimer = function(timerName, inTime, cbFunc) {
                         if(_.isUndefined(timers[timerName])) {
                                 var t = this.convertTime(inTime);
-                                console.log(t);
                                 timers[timerName] = {
                                         when: App.Game.gameTicks() + t, 
                                         callback: cbFunc
@@ -143,16 +142,16 @@
                         this.props.genderID = App.Tools.rand(0, 1) ? 'm' : 'f';
                         this.props.sexuality = App.Tools.rand(0, 100);
 
-                        this.addTimer('toChild', '1 days', function(){
+                        this.addTimer('toChild', '4 years', function(){
                                 App.Player.playerEnt.c('Player').props.stage = 'child';
                         });
-                        this.addTimer('toTeen', '2 days', function(){
+                        this.addTimer('toTeen', '12 years', function(){
                                 App.Player.playerEnt.c('Player').props.stage = 'teen';
                         });
-                        this.addTimer('toAdult', '3 days', function(){
+                        this.addTimer('toAdult', '20 years', function(){
                                 App.Player.playerEnt.c('Player').props.stage = 'adult';
                         });
-                        this.addTimer('toElderly', '4 days', function(){
+                        this.addTimer('toElderly', '60 years', function(){
                                 App.Player.playerEnt.c('Player').props.stage = 'elderly';
                                 App.Player.playerEnt.attrs.speed = 1;
                         });

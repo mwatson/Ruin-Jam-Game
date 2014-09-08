@@ -14,12 +14,30 @@ teen: 12 - 19 years
 adult: 20 - 59 years
 elderly: 60 - ?? years
 
-Lifespan generation should be a curve:
-- spans from 65 - 85 are most likely
-- 85 - 95 equally likely to 55 - 65 etc
-- cap is 110
-- lifespans below 45 are very unlikely, tied to disease usually
+To generate lifespan:
 
-Disease/Disorders
-- Generally determine deaths for younger characters
+Start With Standard Lifespans:
+
+Pick a range (based on % chance):
+ 2%: 45 - 50
+ 8%: 50 - 55
+20%: 55 - 65
+20%: 65 - 75
+20%: 75 - 85
+20%: 85 - 95
+ 8%: 95 - 100
+ 2%: 100 - 105
+
+Select a year within that range, even chance of each year.
+
+Generate disease chance:
+- General "disease", but contains different levels, each shotens life:
+    10% L0 - No disease
+    50% L1 - 1 - 3 years
+    20% L2 - 5 - 8 years
+    10% L3 - 8 - 12 years
+     5% L4 - 12 - 15 years
+     3% L5 - 15 - 20 years
+     2% L6 - 20 - 25 years
+
 

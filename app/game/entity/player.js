@@ -98,6 +98,8 @@
                             skin = App.Defs.PlayerSprites.skin[rSkin], 
                             rHair = App.Tools.rand(0, App.Defs.PlayerSprites.hair.length - 1), 
                             hair = App.Defs.PlayerSprites.hair[rHair], 
+                            rOldHair = App.Tools.rand(0, App.Defs.PlayerSprites.oldHair.length - 1), 
+                            oldHair = App.Defs.PlayerSprites.oldHair[rOldHair], 
                             rEyes = App.Tools.rand(0, App.Defs.PlayerSprites.eyes.length - 1), 
                             eyes = App.Defs.PlayerSprites.eyes[rEyes], 
                             shirt = { r: 0, g: 0, b: 0 }, 
@@ -106,7 +108,7 @@
                             pantsdark = { r: 0, g: 0, b: 0 }, 
                             bodyGrid = false, 
                             hairGrid = false, 
-                            i, x, y, g, its, 
+                            i, x, y, g, its, hairSel, 
                             hairDone = {};
 
                         shirt.r = App.Tools.rand(0, 255);
@@ -120,6 +122,13 @@
                         pants.r = App.Tools.rand(0, 255);
                         pants.g = App.Tools.rand(0, 255);
                         pants.b = App.Tools.rand(0, 255);
+
+                        var bgCol = 'rgba(' + 
+                                ((255 ^ pants.r) | 192) + ',' + 
+                                ((255 ^ pants.g) | 192) + ',' + 
+                                ((255 ^ pants.b) | 192) + ',1)';
+
+                        App.Draw.get('background').setBgColor(bgCol);
 
                         pantsdark.r = Math.floor((pants.r + 32) / 2);
                         pantsdark.g = Math.floor((pants.g + 32) / 2);
@@ -178,6 +187,12 @@
                                                 }
                                         }
 
+                                        if(stages[i] == "elderly") {
+                                                hairSel = _.clone(oldHair);
+                                        } else {
+                                                hairSel = _.clone(hair);
+                                        }
+
                                         for(x in hairDone) {
                                                 if(hairDone[x].hasOwnProperty()) {
                                                         continue;
@@ -185,7 +200,7 @@
                                                 if(!hairDone[x][2]) {
                                                         continue;
                                                 }
-                                                setPixel(imgData, hairDone[x][0], hairDone[x][1], hair.r, hair.g, hair.b, 255);
+                                                setPixel(imgData, hairDone[x][0], hairDone[x][1], hairSel.r, hairSel.g, hairSel.b, 255);
                                         }
 
                                         var scratch = document.createElement('canvas'), 

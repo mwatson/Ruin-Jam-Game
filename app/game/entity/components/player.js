@@ -14,16 +14,64 @@
                         hair: ''
                 };
 
-                var timers = {}, 
-                    life = {};
+                // for now the timescale is (realtime to gametime): 
+                // 1m  = 1d
 
-                // addTimer takes a number of miliseconds in the future to be triggered, 
-                // but stores it relative to the current time so we can simulate stuff 
-                // that happens when the game is not being played (not opened)
+                // common gametimes to real times
+                // 85yrs = ~21d
+                // 65yrs = ~16d
+                // 10yrs = 2.5d
+                // 20yrs = 5d
+                // 1yr = 6hr
+
+                var timers = {}, 
+                    life = {
+                        start: 0, 
+                        timescale: 60 // how many seconds = 1day
+                    };
+
+                // convert in-game time to real-time miliseconds
+                this.convertTime = function(gameTime) {
+                        var gt = gameTime.split(' '), 
+                            gNum = parseInt(gt[0]), 
+                            gUnit = gt[1], 
+                            mul = 1;
+
+                            switch(gUnit) {
+                                
+                                case 'day':
+                                case 'days':
+                                        mul = 1;
+                                        break;
+
+                                case 'week':
+                                case 'weeks':
+                                        mul *= 7;
+                                        break;
+
+                                case 'month':
+                                case 'months':
+                                        mul *= 30;
+                                        break;
+
+                                case 'year':
+                                case 'years':
+                                        mul *= 365;
+                                        break;
+                            }
+
+                            return life.timescale * gNum * mul * 1000;
+                };
+
+                // addTimer takes an in-game timeframe (6 years, 10 days etc) and converts it to 
+                // real time, building a timer relative to the current time so we can simulate stuff 
+                // that happens when the game is not being played (it's not opened)
                 this.addTimer = function(timerName, inTime, cbFunc) {
                         if(_.isUndefined(timers[timerName])) {
+                                var t = this.convertTime(inTime);
+                                console.log(t);
                                 timers[timerName] = {
-                                        when: App.Game.gameTicks() + inTime, 
+                                        when: App.Game.gameTicks() + t, 
                                         callback: cbFunc
                                 };
                         }
@@ -95,14 +143,18 @@
                         this.props.genderID = App.Tools.rand(0, 1) ? 'm' : 'f';
                         this.props.sexuality = App.Tools.rand(0, 100);
 
-                        this.addTimer('toChild', /*87600*/6000, function(){
+                        this.addTimer('toChild', '1 days', function(){
                                 App.Player.playerEnt.c('Player').props.stage = 'child';
                         });
-                        this.addTimer('toTeen', /*87600*/12000, function(){
+                        this.addTimer('toTeen', '2 days', function(){
                                 App.Player.playerEnt.c('Player').props.stage = 'teen';
                         });
-                        this.addTimer('toAdult', /*87600*/18000, function(){
+                        this.addTimer('toAdult', '3 days', function(){
                                 App.Player.playerEnt.c('Player').props.stage = 'adult';
+                        });
+                        this.addTimer('toElderly', '4 days', function(){
+                                App.Player.playerEnt.c('Player').props.stage = 'elderly';
+                                App.Player.playerEnt.attrs.speed = 1;
                         });
                 };
 

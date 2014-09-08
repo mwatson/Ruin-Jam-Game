@@ -84,7 +84,7 @@
                                 'child', 
                                 'teen', 
                                 'adult', 
-                                //'elderly'
+                                'elderly'
                             ];
 
                         props.x = 100;

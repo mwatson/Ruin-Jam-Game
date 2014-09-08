@@ -16,7 +16,7 @@
                 titleScreen: function() {
 
                         App.Draw.get('hud').writeText(
-                                "TITLE",
+                                "A LIFE",
                                 App.Game.settings.hud.mainFont, 
                                 '#000', 
                                 50, 

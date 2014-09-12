@@ -136,25 +136,79 @@
 
                 this.init = function() {
                         life.start = App.Game.gameTicks();
+                        
+                        this.props.life = 0;
 
-                        this.props.life = App.Tools.rand(0, 105);
+                        var lifespans = [
+                                { chance: 2,  min: 45,  max: 50 }, 
+                                { chance: 8,  min: 50,  max: 55 }, 
+                                { chance: 20, min: 55,  max: 65 }, 
+                                { chance: 20, min: 65,  max: 75 }, 
+                                { chance: 20, min: 75,  max: 85 }, 
+                                { chance: 20, min: 85,  max: 95 }, 
+                                { chance: 8,  min: 95,  max: 100 }, 
+                                { chance: 2,  min: 100, max: 105 }
+                        ], l = App.Tools.rand(1, 100), c = 0;
+
+                        for(var i = 0; i < lifespans.length; i++) {
+                                c += lifespans[i].chance;
+                                if(c >= l) {
+                                        this.props.life = App.Tools.rand(lifespans[i].min, lifespans[i].max);
+                                        break;
+                                }
+                        }
+
+                        var diseases = [
+                                { chance: 10, min: 0, max: 0 }, 
+                                { chance: 50, min: 1, max: 3 }, 
+                                { chance: 20, min: 5, max: 8 }, 
+                                { chance: 10, min: 8, max: 12 }, 
+                                { chance: 5, min: 12, max: 15 }, 
+                                { chance: 3, min: 15, max: 20 }, 
+                                { chance: 2, min: 20, max: 25 }
+                        ], d = App.Tools.rand(1, 100);
+
+                        c = 0;
+                        for(var i = 0; i < diseases.length; i++) {
+                                c += diseases[i].chance;
+                                if(c >= d) {
+                                        this.props.life -= App.Tools.rand(diseases[i].min, diseases[i].max);
+                                        break;
+                                }
+                        }
+
                         this.props.gender = App.Tools.rand(0, 100);
                         this.props.genderID = App.Tools.rand(0, 1) ? 'm' : 'f';
                         this.props.sexuality = App.Tools.rand(0, 100);
 
-                        this.addTimer('toChild', '4 years', function(){
-                                App.Player.playerEnt.c('Player').props.stage = 'child';
+                        if(this.props.life >= 4) {
+                                this.addTimer('toChild', '4 years', function(){
+                                        App.Player.playerEnt.c('Player').props.stage = 'child';
+                                });
+                        }
+                        if(this.props.life >= 12) {
+                                this.addTimer('toTeen', '12 years', function(){
+                                        App.Player.playerEnt.c('Player').props.stage = 'teen';
+                                });
+                        }
+                        if(this.props.life >= 20) {
+                                this.addTimer('toAdult', '20 years', function(){
+                                        App.Player.playerEnt.c('Player').props.stage = 'adult';
+                                });
+                        }
+                        if(this.props.life >= 60) {
+                                this.addTimer('toElderly', '60 years', function(){
+                                        App.Player.playerEnt.c('Player').props.stage = 'elderly';
+                                        App.Player.playerEnt.attrs.speed = 1;
+                                });
+                        }
+
+                        this.addTimer('toDeath', this.props.life + ' years', function(){
+                                App.Player.playerEnt.c('Player').props.stage = 'death';
+                                App.Player.playerEnt.attrs.speed = 0;
                         });
-                        this.addTimer('toTeen', '12 years', function(){
-                                App.Player.playerEnt.c('Player').props.stage = 'teen';
-                        });
-                        this.addTimer('toAdult', '20 years', function(){
-                                App.Player.playerEnt.c('Player').props.stage = 'adult';
-                        });
-                        this.addTimer('toElderly', '60 years', function(){
-                                App.Player.playerEnt.c('Player').props.stage = 'elderly';
-                                App.Player.playerEnt.attrs.speed = 1;
-                        });
+
+                        // build death sprites here
                 };
 
                 this.init();

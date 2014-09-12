@@ -27,7 +27,7 @@
                 var timers = {}, 
                     life = {
                         start: 0, 
-                        timescale: 60 // how many seconds = 1day
+                        timescale: 8.57 // how many seconds = 1day
                     };
 
                 // convert in-game time to real-time miliseconds

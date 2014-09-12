@@ -187,7 +187,7 @@
                                                 }
                                         }
 
-                                        if(stages[i] == "elderly") {
+                                        if(stages[i] == "elderly" || stages[i] == "death") {
                                                 hairSel = _.clone(oldHair);
                                         } else {
                                                 hairSel = _.clone(hair);

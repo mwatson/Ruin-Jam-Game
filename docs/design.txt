@@ -1,11 +1,11 @@
-Generate a timeline:
-
-(not to scale example)
-0 ---- Event ---- 15 --- Event ----------- 45 -------- Event --- 65 ------- 85 Death
-
-Scale: 
+Scale(s): 
+60 sec = 1 day
 1 min = 1 day
 (85 years = ~21 days)
+
+8.57 sec = 1 day
+1 min = 1 week
+(85 years = ~3 days)
 
 Phases (years inclusive):
 baby: 0 - 3 years
@@ -39,5 +39,4 @@ Generate disease chance:
      5% L4 - 12 - 15 years
      3% L5 - 15 - 20 years
      2% L6 - 20 - 25 years
-
 

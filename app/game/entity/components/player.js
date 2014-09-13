@@ -207,8 +207,6 @@
                                 App.Player.playerEnt.c('Player').props.stage = 'death';
                                 App.Player.playerEnt.attrs.speed = 0;
                         });
-
-                        // build death sprites here
                 };
 
                 this.init();

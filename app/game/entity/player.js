@@ -238,6 +238,16 @@
                                         });
                                 }
                         }
+
+                        console.log(App.Player.props);
+                        /*
+                        if(App.Player.props.life >= 60) {
+                        } else if(App.Player.props.life >= 20) {
+                        } else if(App.Player.props.life >= 12) {
+                        } else if(App.Player.props.life >= 4) {
+                        } else { 
+                        }
+                        */
                 };
 
                 this.setup = (function(self, settings) {

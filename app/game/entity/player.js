@@ -109,7 +109,8 @@
                             bodyGrid = false, 
                             hairGrid = false, 
                             i, x, y, g, its, hairSel, 
-                            hairDone = {};
+                            hairDone = {}, 
+                            scratch, scCtx;
 
                         shirt.r = App.Tools.rand(0, 255);
                         shirt.g = App.Tools.rand(0, 255);
@@ -203,8 +204,8 @@
                                                 setPixel(imgData, hairDone[x][0], hairDone[x][1], hairSel.r, hairSel.g, hairSel.b, 255);
                                         }
 
-                                        var scratch = document.createElement('canvas'), 
-                                            scCtx = scratch.getContext('2d');
+                                        scratch = document.createElement('canvas');
+                                        scCtx = scratch.getContext('2d');
 
                                         scratch.width = 16;
                                         scratch.height = 16;
@@ -239,15 +240,38 @@
                                 }
                         }
 
-                        console.log(App.Player.props);
-                        /*
-                        if(App.Player.props.life >= 60) {
-                        } else if(App.Player.props.life >= 20) {
-                        } else if(App.Player.props.life >= 12) {
-                        } else if(App.Player.props.life >= 4) {
-                        } else { 
+                        var playerProps = this.playerEnt.c('Player').props, 
+                            deathSprite = null, 
+                            scr = null, 
+                            dsCtx, 
+                            sp;
+
+                        if(playerProps.life >= 60) {
+                                sp = 'elderly';
+                        } else if(playerProps.life >= 20) {
+                                sp = 'adult';
+                        } else if(playerProps.life >= 12) {
+                                sp = 'teen';
+                        } else if(playerProps.life >= 4) {
+                                sp = 'child';
+                        } else {
+                                sp = 'baby';
                         }
-                        */
+
+                        deathSprite = this.playerEnt.c('Renderable').attrs.sprites[sp].idle[0].frame;
+
+                        scratch = document.createElement('canvas');
+                        scCtx = scratch.getContext('2d');
+                        scCtx.translate(8, 8);
+                        scCtx.rotate(-90 * Math.PI / 180);
+                        scCtx.drawImage(deathSprite, -12, -8);
+
+                        this.playerEnt.c('Renderable').attrs.sprites.death = {
+                                idle: [{
+                                        frame: scratch, 
+                                        duration: 100
+                                }]
+                        };
                 };
 
                 this.setup = (function(self, settings) {

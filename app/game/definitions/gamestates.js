@@ -23,8 +23,12 @@
                                                 }
                                         }
 
-                                        if(App.Controls.keyPress('ESC')) {
-                                                switch(App.Game.gameState) {
+                                        if(App.Game.gameState == "gameplay" || 
+                                           App.Game.gameState == "gameover"
+                                        ) {
+                                                if(App.Controls.keyPress('ESC')) {
+                                                        App.Game.setGameState('quit', function(){
+                                                        });
                                                 }
                                         }
                                 }
@@ -72,6 +76,9 @@
 
                                         if(App.Controls.keyPress('SPACE')) {
                                                 App.Game.setGameState('setup', function(){
+                                                        App.Game.guid = App.Tools.guid();
+                                                        Math.seedrandom(App.Game.guid);
+                                                        App.Game.seed = Math.random;
                                                 });
                                         }
                                 }
@@ -97,6 +104,7 @@
 
                                         if(1) {
                                                 App.Game.setGameState('gameplay', function(){
+                                                        App.Saves.GameSave.save();
                                                 });
                                         }
                                 }
@@ -122,6 +130,56 @@
 
                                         App.Player.playerEnt.c('Player').behavior();
                                         App.Player.playerEnt.c('Player').runTimers();
+                                }
+                        }
+                }, 
+
+                gameover: {
+
+                        transition: {
+                                to: function() {
+                                }, 
+                                away: function() {
+                                }
+                        }, 
+
+                        tick: {
+                                draw: function(interpolation, moveDelta) {
+
+                                        App.Player.playerEnt.c('Renderable').draw(interpolation, 'entity', moveDelta);
+                                },
+
+                                update: function() {
+                                        if(App.Controls.keyPress('SPACE')) {
+                                                App.Game.setGameState('titlescreen', function(){
+                                                });
+                                        }
+                                }
+                        }
+                }, 
+
+                quit: {
+                        transition: {
+                                to: function() {
+                                }, 
+                                away: function() {
+                                }
+                        }, 
+
+                        tick: {
+                                draw: function(interpolation, moveDelta) {
+                                        App.Defs.Huds.quitScreen();
+
+                                        App.Player.playerEnt.c('Renderable').draw(interpolation, 'entity', moveDelta);
+                                },
+
+                                update: function() {
+                                        if(App.Controls.keyPress('Y')) {
+                                                // quit the game
+                                        }
+                                        if(App.Controls.keyPress('N')) {
+                                                App.Game.setGameState('gameplay');
+                                        }
                                 }
                         }
                 }

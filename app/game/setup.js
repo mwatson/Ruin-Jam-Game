@@ -52,6 +52,7 @@ App.init = function() {
                                 mainFont: '56px PressStart',
                                 bigFont: '44px PressStart', 
                                 medFont: '36px PressStart', 
+                                midFont: '24px PressStart', 
                                 smallFont: '16px PressStart'
                         }, 
 
@@ -59,6 +60,9 @@ App.init = function() {
                         fontHeights: {
                                 '64px PressStart': 64, 
                                 '56px PressStart': 56, 
+                                '44px PressStart': 44, 
+                                '36px PressStart': 36, 
+                                '24px PressStart': 24, 
                                 '16px PressStart': 16, 
                                 'bold 26px Courier New': 26,
                                 'bold 12px Courier New': 12

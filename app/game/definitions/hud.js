@@ -16,19 +16,39 @@
                 titleScreen: function() {
 
                         App.Draw.get('hud').writeText(
-                                "LIFE",
+                                "BEING",
                                 App.Game.settings.hud.mainFont, 
                                 '#000', 
                                 50, 
-                                250
+                                200
                         );
 
                         App.Draw.get('hud').writeText(
-                                "PRESS SPACE TO BEGIN",
+                                "press SPACE to begin",
                                 App.Game.settings.hud.smallFont, 
                                 '#000', 
                                 50, 
-                                280
+                                230
+                        );
+                }, 
+
+                quitScreen: function() {
+
+                        App.Draw.get('hud').writeText(
+                                "Really quit?",
+                                App.Game.settings.hud.midFont, 
+                                '#000', 
+                                50, 
+                                230
+                        );
+
+                        App.Draw.get('hud').writeTextMultiLine(
+                                "(Y)es|(N)o",
+                                App.Game.settings.hud.smallFont, 
+                                '#000', 
+                                60, 
+                                260, 
+                                24
                         );
                 }
         };

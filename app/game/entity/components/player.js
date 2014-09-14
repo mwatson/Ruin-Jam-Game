@@ -27,7 +27,7 @@
                 var timers = {}, 
                     life = {
                         start: 0, 
-                        timescale: 8.57 // how many seconds = 1day
+                        timescale: 60 // how many seconds in a day
                     };
 
                 // convert in-game time to real-time miliseconds
@@ -60,7 +60,9 @@
                                         break;
                             }
 
-                            return life.timescale * gNum * mul * 1000;
+                            mul = 0.25;
+
+                            return life.timescale * gNum * mul;// * 1000;
                 };
 
                 // addTimer takes an in-game timeframe (6 years, 10 days etc) and converts it to 
@@ -69,6 +71,7 @@
                 this.addTimer = function(timerName, inTime, cbFunc) {
                         if(_.isUndefined(timers[timerName])) {
                                 var t = this.convertTime(inTime);
+                                console.log(t);
                                 timers[timerName] = {
                                         when: App.Game.gameTicks() + t, 
                                         callback: cbFunc
@@ -206,6 +209,9 @@
                         this.addTimer('toDeath', this.props.life + ' years', function(){
                                 App.Player.playerEnt.c('Player').props.stage = 'death';
                                 App.Player.playerEnt.attrs.speed = 0;
+                                App.Game.setGameState('gameover', function(){
+                                        App.Saves.GameSave.purge();
+                                });
                         });
                 };
 

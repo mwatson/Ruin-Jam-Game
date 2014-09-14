@@ -1,8 +1,8 @@
 (function(root){
         var game = function() {
 
-                this.version = "0.0.2";
-                this.versionString = "Ruin Jam Game v" + this.version;
+                this.version = "0.0.3";
+                this.versionString = "Being v" + this.version;
                 
                 var self = this;
 
@@ -40,14 +40,16 @@
                                 }
                         }
 
-                        // seed the RNG
-                        Math.seedrandom();
+                        App.Tools = new App.Objects.Tools();
+                        this.guid = App.Tools.guid();
+
+                        // seed the RNG with the GUID
+                        Math.seedrandom(this.guid);
                         this.seed = Math.random;
                         
                         // initialize game objects
-                        App.Tools       = new App.Objects.Tools();
                         App.Definitions = new App.Objects.Definitions();
-                        //App.Storage     = new App.Objects.Storage();
+                        App.Storage     = new App.Objects.Storage();
                         App.Draw        = new App.Objects.Draw(settings.draw);
                         //App.Sound       = new App.Objects.Sound(settings.sound);
                         App.Controls    = new App.Objects.Controls();
@@ -55,20 +57,12 @@
 
                         App.Draw.get('background').setBgColor('#EEE');
 
-                        // init savefiles (TODO: automate this?)
-                        //App.Saves = {};
-                        //App.Saves.StatsSave = new App.Objects.SaveFile(App.Defs.Saves_StatsSave);
-                        //App.Saves.ConfigSave = new App.Objects.SaveFile(App.Defs.Saves_ConfigSave);
+                        // init savefiles
+                        App.Saves = {};
+                        App.Saves.GameSave = new App.Objects.SaveFile(App.Defs.Saves_GameSave);
 
-                        // load stats & config
-                        //App.Saves.StatsSave.load();
-                        //App.Saves.ConfigSave.load();
-
-                        // generate guid if there isn't one
-                        if(!this.guid) {
-                                this.guid = App.Tools.guid();
-                                //App.Saves.ConfigSave.save();
-                        }
+                        // load game
+                        App.Saves.GameSave.load();
 
                         // Load assets
                         App.Tools.assetLoader();

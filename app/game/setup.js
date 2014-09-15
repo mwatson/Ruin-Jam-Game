@@ -38,7 +38,7 @@ App.init = function() {
                         debug: {
                                 font: 'bold 26px Courier New', 
                                 smFont: 'bold 12px Courier New',
-                                fps: true, 
+                                fps: false, 
                                 showDMap: false, 
                                 drawTextMap: false, 
 

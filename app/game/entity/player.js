@@ -34,7 +34,7 @@
 
                         hairDone[x + '_' + y] = [ x, y, 0 ];
 
-                        if(hairGrid[y][x] == 0) {
+                        if(hairGrid[y][x] === 0) {
                                 return 0;
                         }
 
@@ -47,7 +47,7 @@
 
                         for(var i = -1; i <= 1; i++) {
                                 for(var j = -1; j <= 1; j++) {
-                                        if(j == 0 && i == 0) {
+                                        if(j === 0 && i === 0) {
                                                 continue;
                                         }
                                         generateHair(hairDone, hairGrid, x + j, y + i);
@@ -87,11 +87,55 @@
                                 'elderly'
                             ];
 
-                        props.x = 100;
-                        props.y = 100;
+                        props.x = App.Tools.rand(100, 500);
+                        props.y = App.Tools.rand(100, 350);
                         props.type = 'player';
 
                         this.playerEnt = new App.Objects.Entity(props);
+
+                        var pComp = this.playerEnt.c('Player');
+
+                        App.Saves.PlayerSave.load();
+
+                        if(pComp.props.life >= 4) {
+                                pComp.addTimer('toChild', '4 years', function(){
+                                        App.Player.playerEnt.c('Player').props.stage = 'child';
+                                });
+                        }
+                        if(pComp.props.life >= 12) {
+                                pComp.addTimer('toTeen', '12 years', function(){
+                                        pComp.props.stage = 'teen';
+                                });
+                        }
+                        if(pComp.props.life >= 20) {
+                                pComp.addTimer('toAdult', '20 years', function(){
+                                        pComp.props.stage = 'adult';
+                                });
+                        }
+                        if(pComp.props.life >= 60) {
+                                pComp.addTimer('toElderly', '60 years', function(){
+                                        pComp.props.stage = 'elderly';
+                                        App.Player.playerEnt.attrs.speed = 1;
+                                });
+                        }
+
+                        pComp.addTimer('toDeath', pComp.props.life + ' years', function(){
+                                pComp.props.stage = 'death';
+                                App.Player.playerEnt.attrs.speed = 0;
+
+                                // some lazy stuff next
+                                App.Player.playerEnt.state = 'idle';
+                                App.Player.playerEnt.c('Movable').setLastPos(
+                                        App.Player.playerEnt.attrs.x, 
+                                        App.Player.playerEnt.attrs.y
+                                );
+
+                                // set to gameover state
+                                App.Game.setGameState('gameover', function(){
+                                        App.Saves.GuidSave.purge();
+                                        App.Saves.PlayerSave.purge();
+                                });
+                        });
 
                         var gId = this.playerEnt.c('Player').props.genderID, 
                             rSkin = App.Tools.rand(0, App.Defs.PlayerSprites.skin.length - 1), 
@@ -110,7 +154,11 @@
                             hairGrid = false, 
                             i, x, y, g, its, hairSel, 
                             hairDone = {}, 
-                            scratch, scCtx;
+                            scratch = document.createElement('canvas'), 
+                            scCtx = scratch.getContext('2d');
+
+                        scratch.width = 16;
+                        scratch.height = 16;
 
                         shirt.r = App.Tools.rand(0, 255);
                         shirt.g = App.Tools.rand(0, 255);
@@ -204,23 +252,20 @@
                                                 setPixel(imgData, hairDone[x][0], hairDone[x][1], hairSel.r, hairSel.g, hairSel.b, 255);
                                         }
 
-                                        scratch = document.createElement('canvas');
-                                        scCtx = scratch.getContext('2d');
-
-                                        scratch.width = 16;
-                                        scratch.height = 16;
-
+                                        scCtx.clearRect(0, 0, 16, 16);
                                         scCtx.putImageData(imgData, 0, 0);
                                         ctx.drawImage(scratch, 0, 0, 16, 16, 0, 0, 16, 16);
 
+                                        scCtx.save();
                                         scCtx.clearRect(0, 0, 16, 16);
                                         scCtx.scale(-1, 1);
                                         scCtx.drawImage(c, -16, 0);
+                                        scCtx.restore();
 
                                         ctx.drawImage(scratch, 0, 0, 16, 16, 16, 0, 16, 16);
 
                                         var st = 'idle';
-                                        if(g == 0) {
+                                        if(g === 0) {
                                                 st = 'idle';
                                         } else if(g <= 2) {
                                                 st = 'walk';
@@ -241,9 +286,6 @@
                         }
 
                         var playerProps = this.playerEnt.c('Player').props, 
-                            deathSprite = null, 
-                            scr = null, 
-                            dsCtx, 
                             sp;
 
                         if(playerProps.life >= 60) {
@@ -258,13 +300,16 @@
                                 sp = 'baby';
                         }
 
-                        deathSprite = this.playerEnt.c('Renderable').attrs.sprites[sp].idle[0].frame;
-
-                        scratch = document.createElement('canvas');
-                        scCtx = scratch.getContext('2d');
+                        scCtx.clearRect(0, 0, 16, 16);
+                        scCtx.save();
                         scCtx.translate(8, 8);
                         scCtx.rotate(-90 * Math.PI / 180);
-                        scCtx.drawImage(deathSprite, -12, -8);
+                        scCtx.drawImage(
+                                this.playerEnt.c('Renderable').attrs.sprites[sp].idle[0].frame, 
+                                -12,
+                                -8
+                        );
+                        scCtx.restore();
 
                         this.playerEnt.c('Renderable').attrs.sprites.death = {
                                 idle: [{

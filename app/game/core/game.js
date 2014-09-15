@@ -1,7 +1,7 @@
 (function(root){
         var game = function() {
 
-                this.version = "0.0.3";
+                this.version = "0.5.1";
                 this.versionString = "Being v" + this.version;
                 
                 var self = this;
@@ -29,7 +29,7 @@
                                 this.win = gui.Window.get();
                                 if(process.platform == "darwin") {
                                         var nativeMenuBar = new gui.Menu({ type: "menubar" });
-                                        nativeMenuBar.createMacBuiltin("Ghost Realm", {
+                                        nativeMenuBar.createMacBuiltin("Being", {
                                                 hideEdit: true,
                                                 hideWindow: true
                                         });
@@ -39,33 +39,25 @@
                                         this.platform = 'win';
                                 }
                         }
-
-                        App.Tools = new App.Objects.Tools();
-                        this.guid = App.Tools.guid();
-
-                        // seed the RNG with the GUID
-                        Math.seedrandom(this.guid);
-                        this.seed = Math.random;
                         
                         // initialize game objects
+                        App.Tools       = new App.Objects.Tools();
                         App.Definitions = new App.Objects.Definitions();
                         App.Storage     = new App.Objects.Storage();
                         App.Draw        = new App.Objects.Draw(settings.draw);
                         //App.Sound       = new App.Objects.Sound(settings.sound);
                         App.Controls    = new App.Objects.Controls();
-                        App.Player      = new App.Objects.Player(settings.player);
-
-                        App.Draw.get('background').setBgColor('#EEE');
 
                         // init savefiles
                         App.Saves = {};
-                        App.Saves.GameSave = new App.Objects.SaveFile(App.Defs.Saves_GameSave);
-
-                        // load game
-                        App.Saves.GameSave.load();
+                        App.Saves.GuidSave = new App.Objects.SaveFile(App.Defs.Saves_GuidSave);
+                        App.Saves.PlayerSave = new App.Objects.SaveFile(App.Defs.Saves_PlayerSave);
 
                         // Load assets
                         App.Tools.assetLoader();
+
+                        // init player
+                        App.Player = new App.Objects.Player(settings.player);
 
                         gameRunning = true;
 

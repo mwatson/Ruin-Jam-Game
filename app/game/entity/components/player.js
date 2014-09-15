@@ -33,7 +33,7 @@
                 // convert in-game time to real-time miliseconds
                 this.convertTime = function(gameTime) {
                         var gt = gameTime.split(' '), 
-                            gNum = parseInt(gt[0]), 
+                            gNum = parseInt(gt[0], 10), 
                             gUnit = gt[1], 
                             mul = 1;
 
@@ -60,9 +60,7 @@
                                         break;
                             }
 
-                            mul = 0.25;
-
-                            return life.timescale * gNum * mul;// * 1000;
+                            return life.timescale * gNum * mul * 1000;
                 };
 
                 // addTimer takes an in-game timeframe (6 years, 10 days etc) and converts it to 
@@ -71,9 +69,8 @@
                 this.addTimer = function(timerName, inTime, cbFunc) {
                         if(_.isUndefined(timers[timerName])) {
                                 var t = this.convertTime(inTime);
-                                console.log(t);
                                 timers[timerName] = {
-                                        when: App.Game.gameTicks() + t, 
+                                        when: this.getStart() + t, 
                                         callback: cbFunc
                                 };
                         }
@@ -103,10 +100,19 @@
 
                 this.behavior = function() {
 
-                        var xDir, yDir, xDiff, yDiff;
+                        var xDir, yDir, xDiff, yDiff, xMin, xMax;
 
                         if(target.x < 0 && target.y < 0) {
-                                target.x = App.Tools.rand(75, 565);
+
+                                if(this.en.attrs.x > 320) {
+                                        xMin = 75;
+                                        xMax = 200;
+                                } else {
+                                        xMin = 350;
+                                        xMax = 565;
+                                }
+
+                                target.x = App.Tools.rand(xMin, xMax);
                                 target.y = App.Tools.rand(150, 350);
                         }
 
@@ -137,8 +143,16 @@
                         this.en.c('Movable').move(xDir, yDir);
                 };
 
+                this.setStart = function(timestamp) {
+                        life.start = timestamp;
+                };
+
+                this.getStart = function() {
+                        return life.start;
+                };
+
                 this.init = function() {
-                        life.start = App.Game.gameTicks();
+                        this.setStart(App.Game.gameTicks());
                         
                         this.props.life = 0;
 
@@ -151,9 +165,9 @@
                                 { chance: 20, min: 85,  max: 95 }, 
                                 { chance: 8,  min: 95,  max: 100 }, 
                                 { chance: 2,  min: 100, max: 105 }
-                        ], l = App.Tools.rand(1, 100), c = 0;
+                        ], l = App.Tools.rand(1, 100), c = 0, i;
 
-                        for(var i = 0; i < lifespans.length; i++) {
+                        for(i = 0; i < lifespans.length; i++) {
                                 c += lifespans[i].chance;
                                 if(c >= l) {
                                         this.props.life = App.Tools.rand(lifespans[i].min, lifespans[i].max);
@@ -172,7 +186,7 @@
                         ], d = App.Tools.rand(1, 100);
 
                         c = 0;
-                        for(var i = 0; i < diseases.length; i++) {
+                        for(i = 0; i < diseases.length; i++) {
                                 c += diseases[i].chance;
                                 if(c >= d) {
                                         this.props.life -= App.Tools.rand(diseases[i].min, diseases[i].max);
@@ -183,36 +197,6 @@
                         this.props.gender = App.Tools.rand(0, 100);
                         this.props.genderID = App.Tools.rand(0, 1) ? 'm' : 'f';
                         this.props.sexuality = App.Tools.rand(0, 100);
-
-                        if(this.props.life >= 4) {
-                                this.addTimer('toChild', '4 years', function(){
-                                        App.Player.playerEnt.c('Player').props.stage = 'child';
-                                });
-                        }
-                        if(this.props.life >= 12) {
-                                this.addTimer('toTeen', '12 years', function(){
-                                        App.Player.playerEnt.c('Player').props.stage = 'teen';
-                                });
-                        }
-                        if(this.props.life >= 20) {
-                                this.addTimer('toAdult', '20 years', function(){
-                                        App.Player.playerEnt.c('Player').props.stage = 'adult';
-                                });
-                        }
-                        if(this.props.life >= 60) {
-                                this.addTimer('toElderly', '60 years', function(){
-                                        App.Player.playerEnt.c('Player').props.stage = 'elderly';
-                                        App.Player.playerEnt.attrs.speed = 1;
-                                });
-                        }
-
-                        this.addTimer('toDeath', this.props.life + ' years', function(){
-                                App.Player.playerEnt.c('Player').props.stage = 'death';
-                                App.Player.playerEnt.attrs.speed = 0;
-                                App.Game.setGameState('gameover', function(){
-                                        App.Saves.GameSave.purge();
-                                });
-                        });
                 };
 
                 this.init();

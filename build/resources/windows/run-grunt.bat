@@ -1,0 +1,1 @@
+Grunt windows && exit 0

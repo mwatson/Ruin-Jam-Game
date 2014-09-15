@@ -4,7 +4,7 @@
 
                 var en = entity, 
                     // store the state for sprites
-                    curStage = '';
+                    curStage = '', 
                     curState = '', 
                     prevState = '', 
                     curFrame = 0, 
@@ -17,10 +17,7 @@
                         step: 0, 
                         stepTime: 0
                     }, 
-                    flash = {
-                        total: 0, 
-                        frame: 0
-                    },
+                    flash = { total: 0, frame: 0 },
                     shakeTime = 0, 
                     shakeDir = { x: 0, y: 0 };
 

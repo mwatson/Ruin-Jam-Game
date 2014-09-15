@@ -32,6 +32,16 @@
                         );
                 }, 
 
+                gameOver: function() {
+                        App.Draw.get('hud').writeText(
+                                "GAME OVER - SPACE to play again",
+                                App.Game.settings.hud.smallFont, 
+                                '#000', 
+                                100, 
+                                430
+                        );
+                }, 
+
                 quitScreen: function() {
 
                         App.Draw.get('hud').writeText(

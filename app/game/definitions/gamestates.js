@@ -39,6 +39,7 @@
 
                         transition: {
                                 to: function() {
+                                        App.Draw.get('background').setBgColor('#EEE');
                                 }, 
                                 away: function() {
                                 }
@@ -62,6 +63,7 @@
 
                         transition: {
                                 to: function() {
+                                        App.Draw.get('background').setBgColor('#EEE');
                                 }, 
                                 away: function() {
                                 }
@@ -76,7 +78,13 @@
 
                                         if(App.Controls.keyPress('SPACE')) {
                                                 App.Game.setGameState('setup', function(){
+                                                        // generate guid
                                                         App.Game.guid = App.Tools.guid();
+
+                                                        // load guid
+                                                        App.Saves.GuidSave.load();
+
+                                                        // seed the RNG with the GUID
                                                         Math.seedrandom(App.Game.guid);
                                                         App.Game.seed = Math.random;
                                                 });
@@ -104,7 +112,8 @@
 
                                         if(1) {
                                                 App.Game.setGameState('gameplay', function(){
-                                                        App.Saves.GameSave.save();
+                                                        App.Saves.GuidSave.save();
+                                                        App.Saves.PlayerSave.save();
                                                 });
                                         }
                                 }
@@ -122,12 +131,10 @@
 
                         tick: {
                                 draw: function(interpolation, moveDelta) {
-
                                         App.Player.playerEnt.c('Renderable').draw(interpolation, 'entity', moveDelta);
                                 },
 
                                 update: function() {
-
                                         App.Player.playerEnt.c('Player').behavior();
                                         App.Player.playerEnt.c('Player').runTimers();
                                 }
@@ -145,6 +152,7 @@
 
                         tick: {
                                 draw: function(interpolation, moveDelta) {
+                                        App.Defs.Huds.gameOver();
 
                                         App.Player.playerEnt.c('Renderable').draw(interpolation, 'entity', moveDelta);
                                 },
@@ -169,16 +177,23 @@
                         tick: {
                                 draw: function(interpolation, moveDelta) {
                                         App.Defs.Huds.quitScreen();
-
-                                        App.Player.playerEnt.c('Renderable').draw(interpolation, 'entity', moveDelta);
                                 },
 
                                 update: function() {
                                         if(App.Controls.keyPress('Y')) {
                                                 // quit the game
+                                                if(App.Player.playerEnt.c('Player').props.stage != 'death') {
+                                                        App.Saves.GuidSave.save();
+                                                        App.Saves.PlayerSave.save();
+                                                }
+                                                App.Game.win.close();
                                         }
                                         if(App.Controls.keyPress('N')) {
-                                                App.Game.setGameState('gameplay');
+                                                var newState = 'gameplay';
+                                                if(App.Player.playerEnt.c('Player').props.stage == 'death') {
+                                                        newState = 'gameover';
+                                                }
+                                                App.Game.setGameState(newState);
                                         }
                                 }
                         }

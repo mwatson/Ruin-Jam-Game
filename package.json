@@ -1,7 +1,7 @@
 {
         "name": "being", 
         "description": "Being", 
-        "version": "0.5.1", 
+        "version": "0.5.2", 
         "devDependencies": {
                 "grunt": "~0.4.1", 
                 "grunt-contrib-concat": "0.3.0", 

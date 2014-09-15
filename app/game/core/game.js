@@ -1,7 +1,7 @@
 (function(root){
         var game = function() {
 
-                this.version = "0.5.1";
+                this.version = "0.5.2";
                 this.versionString = "Being v" + this.version;
                 
                 var self = this;
@@ -38,6 +38,14 @@
                                 } else {
                                         this.platform = 'win';
                                 }
+
+                                this.win.on('close', function(){
+                                        if(App.Player.playerEnt.c('Player').props.stage != 'death') {
+                                                App.Saves.GuidSave.save();
+                                                App.Saves.PlayerSave.save();
+                                        }
+                                        this.close(true);
+                                });
                         }
                         
                         // initialize game objects

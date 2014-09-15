@@ -72,6 +72,7 @@
                         tick: {
                                 draw: function(interpolation, moveDelta) {
                                         App.Defs.Huds.titleScreen();
+                                        App.Defs.Huds.copyright();
                                 },
 
                                 update: function() {
@@ -177,16 +178,15 @@
                         tick: {
                                 draw: function(interpolation, moveDelta) {
                                         App.Defs.Huds.quitScreen();
+                                        App.Defs.Huds.copyright();
                                 },
 
                                 update: function() {
                                         if(App.Controls.keyPress('Y')) {
                                                 // quit the game
-                                                if(App.Player.playerEnt.c('Player').props.stage != 'death') {
-                                                        App.Saves.GuidSave.save();
-                                                        App.Saves.PlayerSave.save();
+                                                if(App.Game.win) {
+                                                        App.Game.win.close();
                                                 }
-                                                App.Game.win.close();
                                         }
                                         if(App.Controls.keyPress('N')) {
                                                 var newState = 'gameplay';

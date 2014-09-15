@@ -53,7 +53,8 @@ App.init = function() {
                                 bigFont: '44px PressStart', 
                                 medFont: '36px PressStart', 
                                 midFont: '24px PressStart', 
-                                smallFont: '16px PressStart'
+                                smallFont: '16px PressStart', 
+                                tinyFont: '8px PressStart'
                         }, 
 
                         // for lazy lookups
@@ -64,6 +65,7 @@ App.init = function() {
                                 '36px PressStart': 36, 
                                 '24px PressStart': 24, 
                                 '16px PressStart': 16, 
+                                '8px PressStart' : 8, 
                                 'bold 26px Courier New': 26,
                                 'bold 12px Courier New': 12
                         }, 

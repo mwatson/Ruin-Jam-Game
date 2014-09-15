@@ -13,6 +13,16 @@
                         );
                 }, 
 
+                copyright: function() {
+                        App.Draw.get('hud').writeText(
+                                "(c) 2014, Mike Watson",
+                                App.Game.settings.hud.tinyFont, 
+                                '#000', 
+                                440, 
+                                440
+                        );
+                }, 
+
                 titleScreen: function() {
 
                         App.Draw.get('hud').writeText(

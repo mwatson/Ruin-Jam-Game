@@ -23,6 +23,7 @@
                         C: 67, 
                         H: 72, 
                         Q: 81, 
+                        Y: 89, 
                         ARROW_UP: 38, 
                         ARROW_RIGHT: 39, 
                         ARROW_DOWN: 40, 

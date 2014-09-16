@@ -42,7 +42,7 @@ App.init = function() {
                                 showDMap: false, 
                                 drawTextMap: false, 
 
-                                nwAllowInspector: true
+                                nwAllowInspector: false
                         }, 
                         fpscap: 60,
                         updatecap: 20, 
@@ -54,7 +54,7 @@ App.init = function() {
                                 medFont: '36px PressStart', 
                                 midFont: '24px PressStart', 
                                 smallFont: '16px PressStart', 
-                                tinyFont: '8px PressStart'
+                                tinyFont: '10px PressStart'
                         }, 
 
                         // for lazy lookups
@@ -65,7 +65,7 @@ App.init = function() {
                                 '36px PressStart': 36, 
                                 '24px PressStart': 24, 
                                 '16px PressStart': 16, 
-                                '8px PressStart' : 8, 
+                                '10px PressStart': 10, 
                                 'bold 26px Courier New': 26,
                                 'bold 12px Courier New': 12
                         }, 

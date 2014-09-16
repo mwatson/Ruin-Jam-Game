@@ -10,7 +10,7 @@
         <array>
                 <dict>
                         <key>CFBundleTypeIconFile</key>
-                        <string>gr.icns</string>
+                        <string>being.icns</string>
                         <key>CFBundleTypeName</key>
                         <string><%= pkg.appBuild.fullname %> App</string>
                         <key>CFBundleTypeRole</key>
@@ -38,7 +38,7 @@
         <key>CFBundleExecutable</key>
         <string>node-webkit</string>
         <key>CFBundleIconFile</key>
-        <string>gr.icns</string>
+        <string>being.icns</string>
         <key>CFBundleIdentifier</key>
         <string>com.intel.nw</string>
         <key>CFBundleInfoDictionaryVersion</key>
@@ -69,7 +69,7 @@
                         <key>UTTypeDescription</key>
                         <string><%= pkg.description %></string>
                         <key>UTTypeIconFile</key>
-                        <string>gr.icns</string>
+                        <string>being.icns</string>
                         <key>UTTypeIdentifier</key>
                         <string>com.intel.nw.app</string>
                         <key>UTTypeReferenceURL</key>

@@ -4,7 +4,7 @@
 
                 name: 'being-guid', 
 
-                versioned: true, 
+                versioned: false, 
 
                 save: function() {
                         return {
@@ -29,7 +29,7 @@
 
                 name: 'being-player', 
 
-                versioned: true, 
+                versioned: false, 
 
                 save: function() {
                         return {

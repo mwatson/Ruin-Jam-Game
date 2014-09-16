@@ -14,11 +14,20 @@
                 }, 
 
                 copyright: function() {
-                        App.Draw.get('hud').writeText(
-                                "(c) 2014, Mike Watson",
+                        App.Draw.get('hud').writeTextMultiLine(
+                                "      A Game By Mike Watson|(c) 2014, mantiseyelabs.com",
                                 App.Game.settings.hud.tinyFont, 
                                 '#000', 
-                                440, 
+                                340, 
+                                420, 
+                                20
+                        );
+
+                        App.Draw.get('hud').writeText(
+                                "v" + App.Game.version,
+                                App.Game.settings.hud.tinyFont, 
+                                '#000', 
+                                50, 
                                 440
                         );
                 }, 
